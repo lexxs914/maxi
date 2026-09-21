@@ -1,163 +1,108 @@
-# 🌻 Proyecto Next.js - Página Principal y Flores Amarillas
+# 💖 Nuestros Momentos — App para Parejas & Flores Amarillas 🌻
 
-¡Bienvenido! Este es un proyecto moderno creado con **Next.js** (React), **TypeScript** y **Tailwind CSS**, preconfigurado para ser **compilable como sitio web estático**.
-
-Si hace mucho tiempo no programas o es tu primera vez usando Next.js y el App Router, **¡no te preocupes!** Esta guía está redactada paso a paso para que entiendas absolutamente todo.
+¡Bienvenido! Este es un proyecto **Mobile-First** moderno y responsivo para parejas, construido con **Next.js 15 (App Router)**, **React**, **TypeScript** y **Tailwind CSS**. La aplicación está totalmente preconfigurada para ser **compilable a un sitio web estático**.
 
 ---
 
 ## 📑 Tabla de Contenidos
-1. [¿Qué contiene este proyecto?](#-qué-contiene-este-proyecto)
-2. [Estructura del Proyecto Explicada](#-estructura-del-proyecto-explicada)
-3. [Requisitos Previos](#-requisitos-previos)
-4. [Cómo Ejecutar el Proyecto en Tu Computadora](#-cómo-ejecutar-el-proyecto-en-tu-computadora)
-5. [Cómo Compilar a Página Estática (Export HTML)](#-cómo-compilar-a-página-estática-export-html)
-6. [¿Cómo funciona el Enrutamiento (Router)?](#-cómo-funciona-el-enrutamiento-router)
-7. [Cómo Editar y Personalizar el Código](#-cómo-editar-y-personalizar-el-código)
-8. [Cómo Publicar en Internet (Vercel / GitHub Pages / Netlify)](#-cómo-publicar-en-internet)
+1. [Características Principales](#-características-principales)
+2. [Paleta de Colores y Modo Claro](#-paleta-de-colores-y-modo-claro)
+3. [Páginas e Interactividad](#-páginas-e-interactividad)
+4. [Estructura de Archivos](#-estructura-de-archivos)
+5. [Comandos para Ejecutar y Compilar](#-comandos-para-ejecutar-y-compilar)
+6. [Cómo Agregar Nuevas Páginas de Parejas](#-cómo-agregar-nuevas-páginas-de-parejas)
 
 ---
 
-## 🌻 ¿Qué contiene este proyecto?
+## ✨ Características Principales
 
-El proyecto consta de dos páginas principales navegables con el sistema de rutas de Next.js:
-
-1. **Página Principal (`/`)**: Una pantalla de inicio limpia con diseño moderno, componentes oscuros con efectos de cristal (*glassmorphism*), botones de acceso rápido y tarjetas explicativas.
-2. **Subpágina "Flores Amarillas" (`/flores-amarillas`)**: Una subpágina interactiva dedicada a las flores amarillas que incluye:
-   - Contador de flores regaladas.
-   - Animación de lluvia/confeti dorado al hacer clic.
-   - Caja de mensaje/dedicatoria personalizable con botón para copiar al portapapeles.
-   - Frase poética temática.
+- **Diseño Mobile-First en Modo Claro**: Optimizado para teléfonos móviles y adaptable a cualquier pantalla.
+- **Rastros de Partículas en el Mouse**:
+  - **Página Principal**: Cursor de corazón con estela efímera de **corazones rosados** que salen despedidos hacia afuera.
+  - **Flores Amarillas**: Estela efímera de **pétalos dorados** sin bordes negros.
+- **Fondo de Flores Animadas**: Animaciones fluidas de flores (`1.png` a `5.png`) asomándose desde los bordes y en el centro.
+- **Flores Interactivas (Hover & Click)**:
+  - Al pasar el cursor sobre cualquier flor, esta **se agranda y se queda fija en pantalla**.
+  - Al hacer clic en una flor, se elige al azar una frase en minúsculas (*"te quiero"*, *"te quiero mucho"* o *"te amo"*) y se activa una de las **4 animaciones en ciclo secuencial (5 segundos de duración)** sobre una capa de **fondo oscuro con efecto de cristal/blur (`backdrop-blur-md`)**.
+- **Favicon Vectorial**: Favicon de flor amarilla SVG (`/flower-favicon.svg`).
 
 ---
 
-## 📂 Estructura del Proyecto Explicada
+## 🎨 Paleta de Colores y Modo Claro
 
-Aquí tienes el mapa de archivos para que no te pierdas:
+- **Blanco (Fondo Principal)**: `#F7F7F7`
+- **Negro (Texto, Bordes e Ilustraciones)**: `#000F08` / `#171D1C`
+- **Color Principal (Flores Amarillas)**: `#FFC000`
+- **Color Secundario (Naranja)**: `#FF8400`
+- **Color Rosa (Página Principal)**: `#FC5A8D` y `#F786AA`
+
+---
+
+## 🌸 Páginas e Interactividad
+
+### 1. Página Principal (`/`)
+- Contenedor dinámico para distintas páginas de parejas.
+- Header destacado *"Nuestros Momentos"*.
+- Cada sección dispone de sus propios colores distintivos en botones y badges.
+- Incluye el componente `<HeartTrail />` y cursor de corazón personalizado.
+
+### 2. Subpágina "Flores Amarillas" (`/flores-amarillas`)
+- Header con botón *"Volver al Inicio"* alineado a la izquierda e ícono + título centrado.
+- 19 posiciones de flores animadas distribuidas en el viewport.
+- **Ciclo Secuencial de Animaciones Interactivas (5s de duración)**:
+  1. **Animación 1**: 38 frases en minúscula sin fondos ni emojis que aparecen una a una en tiempo real por la pantalla.
+  2. **Animación 2**: Explosión inicial en ráfaga de corazones saliendo en 360° desde el centro + frase central.
+  3. **Animación 3**: Frase central con su última letra repitiéndose en tiempo real (`...oooooooooo`) estirándose horizontalmente.
+  4. **Animación 4**: Flujo continuo e incesante de corazones que nacen en el centro y salen volando velozmente hacia los bordes.
+
+---
+
+## 📂 Estructura de Archivos
 
 ```text
 maxi/
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx                # El diseño principal que envuelve a todas las páginas (Navbar + Footer)
-│   │   ├── page.tsx                  # 🏠 La Página Principal (Ruta: /)
-│   │   ├── globals.css               # Estilos globales y Tailwind CSS
+│   │   ├── layout.tsx                # Diseñador global y metadata de la app
+│   │   ├── page.tsx                  # 🏠 Página Principal (Ruta: /)
+│   │   ├── globals.css               # Estilos globales y animaciones CSS keyframes
 │   │   └── flores-amarillas/
-│   │       └── page.tsx              # 🌻 Subpágina "Flores Amarillas" (Ruta: /flores-amarillas)
+│   │       ├── layout.tsx            # Metadata e ícono para Flores Amarillas
+│   │       └── page.tsx              # 🌻 Subpágina interactiva "Flores Amarillas"
 │   └── components/
-│       ├── Navbar.tsx                # Barra de navegación superior con enlaces
-│       └── Footer.tsx                # Pie de página
-├── public/                           # Imágenes, íconos y archivos estáticos públicos
-├── out/                              # 📦 Carpeta que se genera al compilar el sitio estático (HTML/CSS/JS)
-├── next.config.ts                    # Configuración de Next.js (aquí está configurado `output: 'export'`)
-├── package.json                      # Lista de dependencias y comandos del proyecto
-└── tsconfig.json                     # Configuración de TypeScript
+│       ├── PetalTrail.tsx            # Componente de rastro de pétalos amarillos
+│       └── HeartTrail.tsx            # Componente de rastro de corazones rosas
+├── public/
+│   ├── flowers/                      # Imágenes PNG de flores (1.png a 5.png)
+│   ├── flower-favicon.svg            # Favicon vectorial de flor amarilla
+│   └── heart-favicon.svg             # Ícono de corazón
+├── out/                              # 📦 Carpeta generada al compilar el sitio estático
+├── next.config.ts                    # Configuración con `output: 'export'`
+└── package.json                      # Dependencias del proyecto
 ```
 
 ---
 
-## 🛠️ Requisitos Previos
+## 🚀 Comandos para Ejecutar y Compilar
 
-Antes de comenzar, asegúrate de tener instalado en tu computadora:
-- **Node.js** (Versión 18 o superior). Puedes verificar si lo tienes instalado abriendo la terminal y ejecutando:
-  ```bash
-  node -v
-  ```
-
----
-
-## 🚀 Cómo Ejecutar el Proyecto en Tu Computadora
-
-Para ver el proyecto en vivo en tu navegador mientras realizas cambios:
-
-1. Abre la terminal en la carpeta del proyecto (`maxi`).
-2. Ejecuta el comando de desarrollo:
-   ```bash
-   npm run dev
-   ```
-3. Abre tu navegador web e ingresa a:
-   [http://localhost:3000](http://localhost:3000)
-
-Cualquier cambio que guardes en los archivos de la carpeta `src/` se actualizará automáticamente en pantalla sin necesidad de recargar la página.
-
----
-
-## 📦 Cómo Compilar a Página Estática (Export HTML)
-
-Una de las peticiones de este proyecto es que sea **compilable a una página estática** (sin necesidad de tener un servidor Node.js corriendo todo el tiempo).
-
-Para generar los archivos estáticos:
-
-1. Ejecuta el comando de compilación:
-   ```bash
-   npm run build
-   ```
-2. Al finalizar, Next.js creará automáticamente una carpeta llamada **`out/`**.
-3. Dentro de **`out/`** encontrarás:
-   - `index.html` (La página principal)
-   - `flores-amarillas.html` (La subpágina de flores amarillas)
-   - Todos los estilos CSS y archivos Javascript procesados.
-
-Esos archivos dentro de `out/` son los que puedes subir a cualquier hosting estático como **GitHub Pages**, **Netlify**, **Hostinger**, **Cloudflare Pages**, etc.
-
----
-
-## 🗺️ ¿Cómo funciona el Enrutamiento (Router)?
-
-En la versión actual de Next.js se utiliza el **App Router**. Crear una nueva ruta o página es muy fácil:
-
-- Cada carpeta dentro de `src/app/` representa una URL.
-- Si creas la carpeta `src/app/contacto/` y agregas dentro un archivo `page.tsx`, la URL automática será `http://localhost:3000/contacto`.
-
-Para navegar entre páginas sin recargar la pantalla se usa la etiqueta `<Link>` de Next.js:
-
-```tsx
-import Link from 'next/link';
-
-// Ejemplo de navegación
-<Link href="/flores-amarillas">
-  Ir a Flores Amarillas
-</Link>
+### 1. Modo Desarrollo
+Para ver la aplicación en vivo en tu navegador:
+```bash
+npm run dev
 ```
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+
+### 2. Compilación a Sitio Estático (Export HTML)
+Para generar los archivos estáticos listos para publicar en **GitHub Pages**, **Vercel** o cualquier hosting estático:
+```bash
+npm run build
+```
+Los archivos finales HTML/CSS/JS se compilarán dentro de la carpeta **`out/`**.
 
 ---
 
-## ✏️ Cómo Editar y Personalizar el Código
+## 🛠️ Cómo Agregar Nuevas Páginas de Parejas
 
-### 1. Cambiar la Página Principal
-Edita el archivo **`src/app/page.tsx`**. Puedes borrar el contenido actual y escribir tu propio HTML/JSX.
-
-### 2. Cambiar la página de Flores Amarillas
-Edita el archivo **`src/app/flores-amarillas/page.tsx`**. Puedes modificar los mensajes, cambiar los colores de los botones o ajustar la cantidad de confeti.
-
-### 3. Modificar la Barra de Navegación o Pie de Página
-Edita los archivos dentro de **`src/components/Navbar.tsx`** y **`src/components/Footer.tsx`**.
-
----
-
-## 🌐 Cómo Publicar en Internet (Deploy Gratis)
-
-### Opción A: Vercel (Recomendado y Gratis)
-1. Sube tu proyecto a un repositorio de **GitHub**.
-2. Entra a [Vercel.com](https://vercel.com) e inicia sesión con tu cuenta de GitHub.
-3. Haz clic en "Add New Project" e importa este repositorio.
-4. Haz clic en **Deploy** ¡y listo! Tendrás tu enlace público en 1 minuto.
-
-### Opción B: GitHub Pages / Servidor Estático
-1. Ejecuta `npm run build`.
-2. Sube únicamente el contenido de la carpeta `out/` a tu servidor o rama `gh-pages` de GitHub.
-
----
-
-## ❓ Tecnologías Utilizadas
-
-- **Next.js 15+**: Framework de React para producción con App Router.
-- **React 19**: Biblioteca para construir interfaces con componentes.
-- **TypeScript**: Tipado estático para evitar errores de sintaxis en el código.
-- **Tailwind CSS v4**: Framework de CSS mediante clases de utilidad.
-- **Lucide React**: Colección de íconos vectoriales modernos.
-- **Canvas Confetti**: Efectos de animación de confeti interactivo.
-
----
-
-¡Disfruta construyendo tu proyecto y regalando flores amarillas! 🌻✨
+1. Crea una nueva carpeta en `src/app/`, por ejemplo `src/app/nuestra-historia/`.
+2. Crea el archivo `page.tsx` dentro de esa carpeta.
+3. En `src/app/page.tsx`, descomenta o agrega la sección en el array `couplePages` activando `active: true`.
