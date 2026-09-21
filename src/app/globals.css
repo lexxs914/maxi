@@ -1,117 +1,130 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0d0f17;
-  --foreground: #f3f4f6;
-  --primary-yellow: #fbbf24;
-  --primary-glow: rgba(251, 191, 36, 0.3);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --background: #F7F7F7;
+  --foreground-home: #000F08;
+  --foreground-flores: #171D1C;
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: #F7F7F7;
+  color: #000F08;
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
-/* Custom Animations */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-15px) rotate(5deg);
-  }
-}
+/* Vector Flowers Animations (Entering/Leaving edges and fading background) */
 
-@keyframes float-slow {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-25px) rotate(-8deg);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.7;
-    transform: scale(1.08);
-  }
-}
-
-@keyframes shimmer {
+@keyframes flower-drift-left {
   0% {
-    background-position: -200% 0;
+    transform: translateX(-100%) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.85;
   }
   100% {
-    background-position: 200% 0;
+    transform: translateX(110vw) translateY(-40px) rotate(180deg);
+    opacity: 0;
   }
 }
 
-.animate-float {
-  animation: float 4s ease-in-out infinite;
+@keyframes flower-drift-right {
+  0% {
+    transform: translateX(100vw) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateX(-100%) translateY(50px) rotate(-180deg);
+    opacity: 0;
+  }
 }
 
-.animate-float-slow {
-  animation: float-slow 7s ease-in-out infinite;
+@keyframes flower-pop-fade {
+  0% {
+    transform: scale(0.3) rotate(-15deg);
+    opacity: 0;
+  }
+  30% {
+    transform: scale(1.1) rotate(5deg);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(0.4) rotate(20deg);
+    opacity: 0;
+  }
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
+@keyframes flower-edge-top {
+  0% {
+    transform: translateY(-120%) rotate(0deg);
+    opacity: 0;
+  }
+  30% {
+    transform: translateY(10px) rotate(15deg);
+    opacity: 0.9;
+  }
+  70% {
+    transform: translateY(0px) rotate(-10deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-120%) rotate(30deg);
+    opacity: 0;
+  }
 }
 
-/* Glassmorphism utility */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+@keyframes flower-edge-bottom {
+  0% {
+    transform: translateY(120%) rotate(0deg);
+    opacity: 0;
+  }
+  30% {
+    transform: translateY(-15px) rotate(-15deg);
+    opacity: 0.9;
+  }
+  70% {
+    transform: translateY(0px) rotate(10deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(120%) rotate(-30deg);
+    opacity: 0;
+  }
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Helper animation classes */
+.animate-flower-drift-left {
+  animation: flower-drift-left 14s linear infinite;
 }
 
-.glass-card:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(251, 191, 36, 0.3);
-  box-shadow: 0 10px 30px -10px rgba(251, 191, 36, 0.25);
-  transform: translateY(-4px);
+.animate-flower-drift-right {
+  animation: flower-drift-right 16s linear infinite;
 }
 
-/* Yellow Glow Text */
-.text-yellow-glow {
-  color: #fbbf24;
-  text-shadow: 0 0 20px rgba(251, 191, 36, 0.5), 0 0 40px rgba(245, 158, 11, 0.3);
+.animate-flower-pop-fade {
+  animation: flower-pop-fade 7s ease-in-out infinite;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+.animate-flower-edge-top {
+  animation: flower-edge-top 9s ease-in-out infinite;
 }
-::-webkit-scrollbar-track {
-  background: #0d0f17;
-}
-::-webkit-scrollbar-thumb {
-  background: #1f293d;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #fbbf24;
+
+.animate-flower-edge-bottom {
+  animation: flower-edge-bottom 10s ease-in-out infinite;
 }
