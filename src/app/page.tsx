@@ -14,9 +14,9 @@ interface CouplePage {
   href: string;
   badge: string;
   active: boolean;
-  flowerSvgPath?: string;
+  flowerImgPath?: string;
   iconName: "flower" | "history" | "calendar" | "letters";
-  // Colores PROPIOS y DISTINTIVOS de cada sección (sin usar el de la página principal)
+  // Colores PROPIOS y DISTINTIVOS de cada sección
   sectionColor: string;
   sectionSecondaryColor: string;
   textColor: string;
@@ -30,9 +30,9 @@ const couplePages: CouplePage[] = [
     href: "/flores-amarillas",
     badge: "Disponible",
     active: true,
-    flowerSvgPath: "/flowers/sunflower.svg",
+    flowerImgPath: "/flowers/1.png",
     iconName: "flower",
-    // Color distintivo propio de la sección Flores Amarillas (#FFC000 / #FF8400)
+    // Color distintivo propio de la sección Flores Amarillas
     sectionColor: "#FFC000",
     sectionSecondaryColor: "#FF8400",
     textColor: "#171D1C",
@@ -110,18 +110,18 @@ export default function Home() {
                 className="rounded-2xl border-2 border-[#000F08] p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between bg-[#F7F7F7] shadow-[4px_4px_0px_0px_#000F08] hover:shadow-[6px_6px_0px_0px_#000F08] hover:-translate-y-0.5"
               >
                 <div>
-                  {/* Badge & Logo usando el COLOR PROPIO de cada sección */}
+                  {/* Badge & Logo usando las imágenes PNG personalizadas */}
                   <div className="flex items-center justify-between mb-4">
                     <div
                       className="w-12 h-12 rounded-xl border-2 border-[#000F08] flex items-center justify-center p-1.5 shadow-[2px_2px_0px_0px_#000F08]"
                       style={{ backgroundColor: page.sectionColor }}
                     >
-                      {page.flowerSvgPath ? (
+                      {page.flowerImgPath ? (
                         <Image
-                          src={page.flowerSvgPath}
+                          src={page.flowerImgPath}
                           alt={page.title}
-                          width={36}
-                          height={36}
+                          width={40}
+                          height={40}
                           className="w-full h-full object-contain"
                         />
                       ) : null}
@@ -155,8 +155,6 @@ export default function Home() {
             ))}
           </div>
         </section>
-        
-        {/* Footer quitado como fue solicitado */}
       </div>
     </div>
   );

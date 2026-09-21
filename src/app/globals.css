@@ -15,8 +15,16 @@ body {
   padding: 0;
 }
 
+/* Ocultar botón/badge de Next.js en desarrollo abajo a la izquierda */
+[data-nextjs-toast],
+nextjs-portal,
+#next-logo-container,
+[data-nextjs-dialog-overlay] {
+  display: none !important;
+}
+
 /* ------------------------------------------------------------- */
-/* ANIMACIONES DE FLORES: Asomarse desde bordes y Abrirse/Cerrarse */
+/* ANIMACIONES DE FLORES: Frecuentes, suaves y asomándose bordes */
 /* ------------------------------------------------------------- */
 
 @keyframes peek-top {
@@ -25,11 +33,11 @@ body {
     opacity: 0;
   }
   20% {
-    transform: translateY(12px) rotate(6deg);
+    transform: translateY(8px) rotate(6deg);
     opacity: 1;
   }
   75% {
-    transform: translateY(4px) rotate(-4deg);
+    transform: translateY(2px) rotate(-4deg);
     opacity: 1;
   }
   100% {
@@ -44,11 +52,11 @@ body {
     opacity: 0;
   }
   20% {
-    transform: translateY(-12px) rotate(-6deg);
+    transform: translateY(-8px) rotate(-6deg);
     opacity: 1;
   }
   75% {
-    transform: translateY(-4px) rotate(4deg);
+    transform: translateY(-2px) rotate(4deg);
     opacity: 1;
   }
   100% {
@@ -63,15 +71,15 @@ body {
     opacity: 0;
   }
   20% {
-    transform: translateX(16px) rotate(10deg);
+    transform: translateX(10px) rotate(8deg);
     opacity: 1;
   }
   75% {
-    transform: translateX(4px) rotate(-5deg);
+    transform: translateX(2px) rotate(-4deg);
     opacity: 1;
   }
   100% {
-    transform: translateX(-110%) rotate(-15deg);
+    transform: translateX(-110%) rotate(-12deg);
     opacity: 0;
   }
 }
@@ -82,54 +90,55 @@ body {
     opacity: 0;
   }
   20% {
-    transform: translateX(-16px) rotate(-10deg);
+    transform: translateX(-10px) rotate(-8deg);
     opacity: 1;
   }
   75% {
-    transform: translateX(-4px) rotate(5deg);
+    transform: translateX(-2px) rotate(4deg);
     opacity: 1;
   }
   100% {
-    transform: translateX(110%) rotate(15deg);
+    transform: translateX(110%) rotate(12deg);
     opacity: 0;
   }
 }
 
 @keyframes bloom-fade {
   0% {
-    transform: scale(0) rotate(-35deg);
+    transform: scale(0) rotate(-30deg);
     opacity: 0;
   }
   20% {
-    transform: scale(1.06) rotate(4deg);
+    transform: scale(1.05) rotate(4deg);
     opacity: 1;
   }
-  45%, 75% {
+  50%, 75% {
     transform: scale(1) rotate(0deg);
     opacity: 1;
   }
   100% {
-    transform: scale(0) rotate(35deg);
+    transform: scale(0) rotate(30deg);
     opacity: 0;
   }
 }
 
+/* Animaciones más frecuentes y fluidas */
 .animate-peek-top {
-  animation: peek-top 9s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+  animation: peek-top 6s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
 .animate-peek-bottom {
-  animation: peek-bottom 10s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+  animation: peek-bottom 6.5s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
 .animate-peek-left {
-  animation: peek-left 11s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+  animation: peek-left 7s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
 .animate-peek-right {
-  animation: peek-right 12s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+  animation: peek-right 7.5s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
 .animate-bloom-fade {
-  animation: bloom-fade 8s cubic-bezier(0.33, 1, 0.68, 1) infinite;
+  animation: bloom-fade 5.5s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
