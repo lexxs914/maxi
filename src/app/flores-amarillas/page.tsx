@@ -7,69 +7,156 @@ import { ArrowLeft } from "lucide-react";
 import PetalTrail from "@/components/PetalTrail";
 
 const PHRASES = ["te quiero", "te quiero mucho", "te amo"];
+const ANIM_CYCLE: Array<1 | 2 | 3 | 4> = [1, 2, 3, 4];
 
 interface ActiveAnim {
-  type: 1 | 2 | 3;
+  type: 1 | 2 | 3 | 4;
   phrase: string;
   id: number;
 }
 
+interface RandomItem {
+  id: number;
+  x: number;
+  y: number;
+  rotate: number;
+  scale: number;
+}
+
+interface FlyingHeart {
+  id: number;
+  dx: number;
+  dy: number;
+  size: number;
+  color: string;
+}
+
 export default function FloresAmarillasPage() {
   const [activeAnim, setActiveAnim] = useState<ActiveAnim | null>(null);
+  
+  // Ciclo secuencial de 4 animaciones (1 -> 2 -> 3 -> 4 -> 1...)
+  const [cycleIndex, setCycleIndex] = useState<number>(0);
 
-  // Animación 1: Posiciones Random
-  const [randomItems, setRandomItems] = useState<
-    Array<{ id: number; x: number; y: number; rotate: number; scale: number; color: string }>
-  >([]);
+  // Animación 1: Textos apareciendo uno a uno
+  const [randomItems, setRandomItems] = useState<RandomItem[]>([]);
+
+  // Animación 2: Explosión inicial de corazones
+  const [flyingHearts, setFlyingHearts] = useState<FlyingHeart[]>([]);
 
   // Animación 3: Repetición de última letra
   const [repeatingText, setRepeatingText] = useState<string>("");
 
-  // Función para disparar una animación aleatoria al hacer click en cualquier flor
-  const handleFlowerClick = () => {
-    if (activeAnim) return; // Si hay una animación activa de 5-7s, esperar a que termine
+  // Animación 4: Flujo continuo e incesante de corazones desde el centro
+  const [continuousHearts, setContinuousHearts] = useState<FlyingHeart[]>([]);
 
-    const phrase = PHRASES[Math.floor(Math.random() * PHRASES.length)];
-    const type = (Math.floor(Math.random() * 3) + 1) as 1 | 2 | 3;
+  // Clic en cualquier flor
+  const handleFlowerClick = () => {
+    if (activeAnim) return; // Esperar a que la animación actual de 5s termine
+
+    // Frase aleatoria
+    const phrase = PHRASES[Math.floor(Math.random() * PHRASES.length)].toLowerCase();
+
+    // Tipo de animación en ciclo secuencial (1 -> 2 -> 3 -> 4)
+    const type = ANIM_CYCLE[cycleIndex];
+    setCycleIndex((prev) => (prev + 1) % ANIM_CYCLE.length);
+
     const id = Date.now();
 
     setActiveAnim({ type, phrase, id });
+    setRandomItems([]);
+    setFlyingHearts([]);
+    setRepeatingText("");
+    setContinuousHearts([]);
 
-    // Configurar estados de cada animación
-    if (type === 1) {
-      // Generar 28 frases en lugares aleatorios
-      const items = Array.from({ length: 28 }).map((_, i) => ({
-        id: i,
-        x: Math.floor(Math.random() * 80) + 5, // 5% a 85%
-        y: Math.floor(Math.random() * 80) + 10, // 10% a 90%
-        rotate: Math.floor(Math.random() * 40) - 20,
-        scale: Math.random() * 0.7 + 0.9,
-        color: i % 2 === 0 ? "#FFC000" : "#FF8400",
-      }));
-      setRandomItems(items);
+    if (type === 2) {
+      // Generar 50 corazones que salen del centro en ráfaga
+      const hearts: FlyingHeart[] = Array.from({ length: 50 }).map((_, i) => {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.floor(Math.random() * 400) + 200;
+        return {
+          id: i,
+          dx: Math.cos(angle) * dist,
+          dy: Math.sin(angle) * dist,
+          size: Math.floor(Math.random() * 16) + 24,
+          color: i % 2 === 0 ? "#FC5A8D" : "#FFC000",
+        };
+      });
+      setFlyingHearts(hearts);
     } else if (type === 3) {
       setRepeatingText(phrase);
     }
 
-    // Terminar animación automáticamente tras 6 segundos
+    // Duración de EXACTAMENTE 5 segundos
     setTimeout(() => {
       setActiveAnim(null);
       setRandomItems([]);
+      setFlyingHearts([]);
       setRepeatingText("");
-    }, 6000);
+      setContinuousHearts([]);
+    }, 5000);
   };
 
-  // Efecto para la Animación 3: Repetir la última letra en tiempo real
+  // Efecto Animación 1: Aparecen uno a uno (38 frases)
+  useEffect(() => {
+    if (!activeAnim || activeAnim.type !== 1) return;
+
+    let count = 0;
+    const interval = setInterval(() => {
+      if (count >= 38) {
+        clearInterval(interval);
+        return;
+      }
+      count++;
+      setRandomItems((prev) => [
+        ...prev,
+        {
+          id: Date.now() + Math.random(),
+          x: Math.floor(Math.random() * 75) + 5,
+          y: Math.floor(Math.random() * 80) + 10,
+          rotate: Math.floor(Math.random() * 24) - 12,
+          scale: Math.random() * 0.4 + 0.9,
+        },
+      ]);
+    }, 60);
+
+    return () => clearInterval(interval);
+  }, [activeAnim]);
+
+  // Efecto Animación 3: Repetición en tiempo real de la última letra
   useEffect(() => {
     if (!activeAnim || activeAnim.type !== 3) return;
 
     const lastChar = activeAnim.phrase.slice(-1);
     const interval = setInterval(() => {
       setRepeatingText((prev) => {
-        if (prev.length > 180) return prev; // Límite máximo antes de salirse completamente
+        if (prev.length > 150) return prev;
         return prev + lastChar;
       });
-    }, 45); // Se repite rápidamente cada 45ms
+    }, 40);
+
+    return () => clearInterval(interval);
+  }, [activeAnim]);
+
+  // Efecto Animación 4: Flujo continuo de corazones saliendo del centro hacia los bordes
+  useEffect(() => {
+    if (!activeAnim || activeAnim.type !== 4) return;
+
+    const interval = setInterval(() => {
+      // Engendrar 2 corazones nuevos continuamente cada 60ms
+      const newHearts: FlyingHeart[] = Array.from({ length: 2 }).map(() => {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.floor(Math.random() * 450) + 250;
+        return {
+          id: Date.now() + Math.random(),
+          dx: Math.cos(angle) * dist,
+          dy: Math.sin(angle) * dist,
+          size: Math.floor(Math.random() * 16) + 24,
+          color: Math.random() > 0.5 ? "#FC5A8D" : "#FFC000",
+        };
+      });
+
+      setContinuousHearts((prev) => [...prev.slice(-60), ...newHearts]);
+    }, 60);
 
     return () => clearInterval(interval);
   }, [activeAnim]);
@@ -111,8 +198,6 @@ export default function FloresAmarillasPage() {
       {/* CAPA DE FLORES INTERACTIVAS (Hover se agranda y no desaparece) */}
       {/* ------------------------------------------------------------- */}
       <div className="fixed inset-0 z-20 overflow-hidden w-full h-full pointer-events-none">
-        
-        {/* Helper renderizador de flor interactiva */}
         {[
           { pos: "top-4 left-6", anim: "animate-peek-top", delay: "0s", img: "/flowers/1.png" },
           { pos: "top-4 left-1/3", anim: "animate-peek-top", delay: "2.2s", img: "/flowers/2.png" },
@@ -143,7 +228,7 @@ export default function FloresAmarillasPage() {
             className={`absolute ${item.pos} ${item.anim} pointer-events-auto cursor-pointer transition-all duration-300 hover:scale-150 hover:opacity-100 hover:z-50 [&:hover]:[animation-play-state:paused]`}
             style={{ animationDelay: item.delay }}
             onClick={handleFlowerClick}
-            title="¡Haz clic en mí! 🌻"
+            title="¡Haz clic en mí!"
           >
             <Image
               src={item.img}
@@ -154,81 +239,107 @@ export default function FloresAmarillasPage() {
             />
           </div>
         ))}
-
       </div>
 
       {/* ------------------------------------------------------------- */}
-      {/* MONTAJE DE ANIMACIONES INTERACTIVAS DE 5-7 SEGUNDOS           */}
+      {/* MONTAJE DE ANIMACIONES DE 5s (Con Fondo Oscuro + Blur debajo)  */}
       {/* ------------------------------------------------------------- */}
       {activeAnim && (
-        <div className="fixed inset-0 z-50 pointer-events-none flex items-center justify-center overflow-hidden bg-black/10 backdrop-blur-[2px] animate-fade-in">
+        <div className="fixed inset-0 z-50 pointer-events-none flex items-center justify-center overflow-hidden bg-black/30 backdrop-blur-md animate-fade-in">
           
-          {/* ANIMACIÓN 1: Frases en posiciones random llenando la pantalla */}
+          {/* ANIMACIÓN 1: 38 frases en minúscula que aparecen UNA A UNA */}
           {activeAnim.type === 1 && (
             <div className="w-full h-full relative">
               {randomItems.map((item) => (
                 <div
                   key={item.id}
-                  className="absolute px-4 py-2 rounded-2xl border-2 border-[#171D1C] font-extrabold text-sm sm:text-xl shadow-[3px_3px_0px_0px_#171D1C] animate-bounce-short"
+                  className="absolute font-extrabold text-base sm:text-3xl text-[#171D1C] tracking-wide whitespace-nowrap animate-pop-in drop-shadow-sm"
                   style={{
                     left: `${item.x}%`,
                     top: `${item.y}%`,
                     transform: `rotate(${item.rotate}deg) scale(${item.scale})`,
-                    backgroundColor: item.color,
-                    color: "#171D1C",
                   }}
                 >
-                  {activeAnim.phrase.toUpperCase()} 💕
+                  {activeAnim.phrase}
                 </div>
               ))}
             </div>
           )}
 
-          {/* ANIMACIÓN 2: Frase en el medio cubriendo pantalla + Explosión de corazones */}
+          {/* ANIMACIÓN 2: Explosión inicial de corazones desde el centro */}
           {activeAnim.type === 2 && (
-            <div className="w-full h-full flex flex-col items-center justify-center relative">
-              
-              {/* Lluvia / Explosión de corazones */}
-              {Array.from({ length: 45 }).map((_, i) => {
-                const angle = (i / 45) * 360;
-                const dist = Math.floor(Math.random() * 250) + 120;
-                const dx = Math.cos((angle * Math.PI) / 180) * dist;
-                const dy = Math.sin((angle * Math.PI) / 180) * dist;
-                return (
-                  <div
-                    key={i}
-                    className="absolute text-2xl sm:text-4xl animate-explode-heart"
-                    style={{
+            <div className="w-full h-full flex items-center justify-center relative">
+              {flyingHearts.map((heart) => (
+                <div
+                  key={heart.id}
+                  className="absolute animate-heart-fly"
+                  style={
+                    {
                       left: "50%",
                       top: "50%",
-                      transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${Math.random() * 0.8 + 0.8})`,
-                      transitionDuration: `${Math.random() * 1.5 + 1.5}s`,
-                    }}
+                      "--dx": `${heart.dx}px`,
+                      "--dy": `${heart.dy}px`,
+                      "--rot": `0deg`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <svg
+                    width={heart.size}
+                    height={heart.size}
+                    viewBox="0 0 24 24"
+                    fill={heart.color}
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    {i % 2 === 0 ? "❤️" : "💛"}
-                  </div>
-                );
-              })}
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
+                </div>
+              ))}
 
-              {/* Cartel Gigante Centrado */}
-              <div className="z-10 bg-[#FFC000] border-4 border-[#171D1C] px-8 py-6 rounded-3xl shadow-[8px_8px_0px_0px_#171D1C] text-center max-w-lg mx-4 transform animate-pop-in">
-                <span className="text-3xl sm:text-6xl font-black uppercase text-[#171D1C] tracking-wide block mb-2">
-                  ¡{activeAnim.phrase}!
-                </span>
-                <span className="text-xl sm:text-3xl font-extrabold text-[#FF8400] drop-shadow-sm">
-                  🌻 ❤️ 🌻
-                </span>
+              <div className="z-20 text-[#171D1C] text-4xl sm:text-7xl font-extrabold tracking-tight text-center animate-pop-in drop-shadow-sm">
+                {activeAnim.phrase}
               </div>
             </div>
           )}
 
-          {/* ANIMACIÓN 3: Frase con la última letra repitiéndose en tiempo real hasta salirse */}
+          {/* ANIMACIÓN 3: Frase chiquita en el medio con la última letra repitiéndose */}
           {activeAnim.type === 3 && (
             <div className="w-full h-full flex items-center justify-center px-4 overflow-hidden">
-              <div className="bg-[#FF8400] border-4 border-[#171D1C] px-6 py-4 rounded-3xl shadow-[8px_8px_0px_0px_#171D1C] text-center max-w-full">
-                <span className="text-2xl sm:text-5xl font-black uppercase text-[#F7F7F7] tracking-widest whitespace-nowrap block drop-shadow-md">
-                  {repeatingText}...
-                </span>
+              <span className="text-[#171D1C] text-3xl sm:text-6xl font-extrabold tracking-widest whitespace-nowrap text-center drop-shadow-sm">
+                {repeatingText}
+              </span>
+            </div>
+          )}
+
+          {/* ANIMACIÓN 4: Flujo continuo e incesante de corazones volando hacia los bordes */}
+          {activeAnim.type === 4 && (
+            <div className="w-full h-full flex items-center justify-center relative">
+              {continuousHearts.map((heart) => (
+                <div
+                  key={heart.id}
+                  className="absolute animate-heart-fly-fast"
+                  style={
+                    {
+                      left: "50%",
+                      top: "50%",
+                      "--dx": `${heart.dx}px`,
+                      "--dy": `${heart.dy}px`,
+                    } as React.CSSProperties
+                  }
+                >
+                  <svg
+                    width={heart.size}
+                    height={heart.size}
+                    viewBox="0 0 24 24"
+                    fill={heart.color}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
+                </div>
+              ))}
+
+              <div className="z-20 text-[#171D1C] text-4xl sm:text-7xl font-extrabold tracking-tight text-center animate-pop-in drop-shadow-sm">
+                {activeAnim.phrase}
               </div>
             </div>
           )}
