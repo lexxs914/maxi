@@ -22,12 +22,11 @@ export default function PetalTrail() {
 
     const handleMouseMove = (e: MouseEvent) => {
       const now = Date.now();
-      if (now - lastTime < 25) return; // Generación rápida y continua
+      if (now - lastTime < 25) return;
       lastTime = now;
 
-      // Calcular dirección de dispersión hacia afuera en 360 grados
       const angle = Math.random() * Math.PI * 2;
-      const distance = Math.floor(Math.random() * 35) + 25; // Se desplaza entre 25px y 60px hacia afuera
+      const distance = Math.floor(Math.random() * 35) + 25;
       const dx = Math.cos(angle) * distance;
       const dy = Math.sin(angle) * distance;
 
@@ -49,13 +48,13 @@ export default function PetalTrail() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Eliminar rápido los pétalos (~300ms) para que sean ultrafugaces
+  // Limpieza automática tras los 320ms de la animación
   useEffect(() => {
     if (petals.length === 0) return;
 
     const timer = setTimeout(() => {
       setPetals((prev) => prev.slice(1));
-    }, 280);
+    }, 320);
 
     return () => clearTimeout(timer);
   }, [petals]);
@@ -65,22 +64,24 @@ export default function PetalTrail() {
       {petals.map((petal) => (
         <div
           key={petal.id}
-          className="absolute opacity-0 scale-125 transition-all duration-300 ease-out"
-          style={{
-            left: `${petal.x}px`,
-            top: `${petal.y}px`,
-            transform: `translate(calc(-50% + ${petal.dx}px), calc(-50% + ${petal.dy}px)) rotate(${petal.rotation + 45}deg)`,
-            opacity: 0,
-          }}
+          className="absolute animate-particle-pop"
+          style={
+            {
+              left: `${petal.x}px`,
+              top: `${petal.y}px`,
+              "--dx": `${petal.dx}px`,
+              "--dy": `${petal.dy}px`,
+              "--rot": `${petal.rotation}deg`,
+            } as React.CSSProperties
+          }
         >
-          {/* Pétalo Dorado Sin Borde Negro - Doble de tamaño */}
+          {/* Pétalo Dorado Sin Borde Negro */}
           <svg
             width={petal.size}
             height={petal.size}
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="animate-pulse"
           >
             <path
               d="M12 2 C6 7, 3 13, 5 18 C7 21, 12 22, 16 19 C20 15, 18 8, 12 2 Z"

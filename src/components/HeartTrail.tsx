@@ -22,12 +22,11 @@ export default function HeartTrail() {
 
     const handleMouseMove = (e: MouseEvent) => {
       const now = Date.now();
-      if (now - lastTime < 25) return; // Generación rápida y continua
+      if (now - lastTime < 25) return;
       lastTime = now;
 
-      // Dirección de disparo hacia afuera del cursor (360 grados)
       const angle = Math.random() * Math.PI * 2;
-      const distance = Math.floor(Math.random() * 35) + 25; // 25px a 60px hacia afuera
+      const distance = Math.floor(Math.random() * 35) + 25;
       const dx = Math.cos(angle) * distance;
       const dy = Math.sin(angle) * distance;
 
@@ -49,13 +48,13 @@ export default function HeartTrail() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Eliminar rápido los corazones (~280ms) para que sean ultrafugaces
+  // Limpieza automática tras los 320ms de la animación
   useEffect(() => {
     if (hearts.length === 0) return;
 
     const timer = setTimeout(() => {
       setHearts((prev) => prev.slice(1));
-    }, 280);
+    }, 320);
 
     return () => clearTimeout(timer);
   }, [hearts]);
@@ -65,13 +64,16 @@ export default function HeartTrail() {
       {hearts.map((heart) => (
         <div
           key={heart.id}
-          className="absolute opacity-0 scale-125 transition-all duration-300 ease-out"
-          style={{
-            left: `${heart.x}px`,
-            top: `${heart.y}px`,
-            transform: `translate(calc(-50% + ${heart.dx}px), calc(-50% + ${heart.dy}px)) rotate(${heart.rotation}deg)`,
-            opacity: 0,
-          }}
+          className="absolute animate-particle-pop"
+          style={
+            {
+              left: `${heart.x}px`,
+              top: `${heart.y}px`,
+              "--dx": `${heart.dx}px`,
+              "--dy": `${heart.dy}px`,
+              "--rot": `${heart.rotation}deg`,
+            } as React.CSSProperties
+          }
         >
           {/* Corazón Rosa Sin Borde - Doble de tamaño */}
           <svg

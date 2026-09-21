@@ -24,6 +24,26 @@ nextjs-portal,
 }
 
 /* ------------------------------------------------------------- */
+/* ANIMACIÓN DE PARTÍCULAS DEL CURSOR (Disparo hacia afuera)      */
+/* ------------------------------------------------------------- */
+
+@keyframes particle-pop-out {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6) rotate(var(--rot, 0deg));
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15) rotate(calc(var(--rot, 0deg) + 30deg));
+    opacity: 0;
+  }
+}
+
+.animate-particle-pop {
+  animation: particle-pop-out 320ms cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* ------------------------------------------------------------- */
 /* ANIMACIONES DE FLORES: Frecuentes, suaves y asomándose bordes */
 /* ------------------------------------------------------------- */
 
