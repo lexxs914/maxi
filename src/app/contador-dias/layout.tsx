@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "Contador de Días 💖",
   description: "Calculadora de días, meses y años compartiendo el camino.",
   icons: {
-    icon: "/heart-favicon.svg",
+    icon: "/calendar-icon.svg",
   },
 };
 

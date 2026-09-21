@@ -10,9 +10,7 @@ interface CouplePage {
   href: string;
   badge: string;
   active: boolean;
-  flowerImgPath?: string;
-  iconName: "flower" | "history" | "calendar" | "letters";
-  icon?: React.ReactNode;
+  imgPath?: string;
   sectionColor: string;
   sectionSecondaryColor: string;
   textColor: string;
@@ -26,8 +24,7 @@ const couplePages: CouplePage[] = [
     href: "/flores-amarillas",
     badge: "Disponible",
     active: true,
-    flowerImgPath: "/flowers/1.png",
-    iconName: "flower",
+    imgPath: "/flowers/1.png",
     sectionColor: "#FFC000",
     sectionSecondaryColor: "#FF8400",
     textColor: "#171D1C",
@@ -39,7 +36,7 @@ const couplePages: CouplePage[] = [
     href: "/contador-dias",
     badge: "Próximamente",
     active: false,
-    iconName: "calendar",
+    imgPath: "/calendar-icon.svg",
     sectionColor: "#FC5A8D",
     sectionSecondaryColor: "#F42244",
     textColor: "#171D1C",
@@ -82,25 +79,39 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {couplePages.map((page) => (
+              /* Tarjeta: apagada y sin hover si está inactiva */
               <div
                 key={page.id}
-                className="rounded-2xl border-2 border-[#000F08] p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between bg-[#F7F7F7] shadow-[4px_4px_0px_0px_#000F08] hover:shadow-[6px_6px_0px_0px_#000F08] hover:-translate-y-0.5"
+                className={`rounded-2xl border-2 border-[#000F08] p-5 sm:p-6 flex flex-col justify-between bg-[#F7F7F7] shadow-[4px_4px_0px_0px_#000F08] transition-all duration-300 relative overflow-hidden
+                  ${page.active
+                    ? "hover:shadow-[6px_6px_0px_0px_#000F08] hover:-translate-y-0.5"
+                    : "opacity-50 cursor-not-allowed"
+                  }`}
               >
+                {/* Capa de overlay "Próximamente" para inactivas */}
+                {!page.active && (
+                  <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl">
+                    <span className="bg-[#000F08] text-[#F7F7F7] text-xs font-black uppercase px-3 py-1.5 rounded-full tracking-widest rotate-[-8deg] shadow-lg">
+                      Próximamente
+                    </span>
+                  </div>
+                )}
+
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <div
                       className="w-12 h-12 rounded-xl border-2 border-[#000F08] flex items-center justify-center p-1.5 shadow-[2px_2px_0px_0px_#000F08]"
                       style={{ backgroundColor: page.sectionColor }}
                     >
-                      {page.flowerImgPath ? (
+                      {page.imgPath && (
                         <Image
-                          src={page.flowerImgPath}
+                          src={page.imgPath}
                           alt={page.title}
                           width={40}
                           height={40}
                           className="w-full h-full object-contain"
                         />
-                      ) : null}
+                      )}
                     </div>
 
                     <span
@@ -117,14 +128,25 @@ export default function Home() {
                   </p>
                 </div>
 
-                <Link
-                  href={page.href}
-                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold border-2 border-[#000F08] shadow-[2px_2px_0px_0px_#000F08] transition-all active:translate-y-0.5 hover:opacity-90"
-                  style={{ backgroundColor: page.sectionColor, color: page.textColor }}
-                >
-                  <span>Entrar a la página</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                {/* Botón: real si activa, div falso si inactiva */}
+                {page.active ? (
+                  <Link
+                    href={page.href}
+                    className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold border-2 border-[#000F08] shadow-[2px_2px_0px_0px_#000F08] transition-all active:translate-y-0.5 hover:opacity-90"
+                    style={{ backgroundColor: page.sectionColor, color: page.textColor }}
+                  >
+                    <span>Entrar a la página</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                ) : (
+                  <div
+                    className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold border-2 border-[#000F08] shadow-[2px_2px_0px_0px_#000F08]"
+                    style={{ backgroundColor: page.sectionColor, color: page.textColor }}
+                  >
+                    <span>Próximamente</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                )}
               </div>
             ))}
           </div>

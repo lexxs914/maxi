@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Cuerpo del calendario -->
+  <rect x="6" y="12" width="52" height="46" rx="6" ry="6" fill="#FC5A8D" stroke="#171D1C" stroke-width="3"/>
+  <!-- Cabecera roja -->
+  <rect x="6" y="12" width="52" height="16" rx="6" ry="6" fill="#F42244" stroke="#171D1C" stroke-width="3"/>
+  <!-- Tapa inferior cubre las esquinas redondeadas de la cabecera -->
+  <rect x="6" y="22" width="52" height="6" fill="#F42244"/>
+  <!-- Argollas superiores -->
+  <rect x="19" y="6" width="6" height="14" rx="3" ry="3" fill="#171D1C"/>
+  <rect x="39" y="6" width="6" height="14" rx="3" ry="3" fill="#171D1C"/>
+  <!-- Línea horizontal separadora -->
+  <line x1="6" y1="28" x2="58" y2="28" stroke="#171D1C" stroke-width="2.5"/>
+  <!-- Días — fila 1 -->
+  <circle cx="19" cy="39" r="3.5" fill="#171D1C"/>
+  <circle cx="32" cy="39" r="3.5" fill="#171D1C"/>
+  <circle cx="45" cy="39" r="3.5" fill="#171D1C"/>
+  <!-- Días — fila 2 -->
+  <circle cx="19" cy="51" r="3.5" fill="#171D1C"/>
+  <circle cx="32" cy="51" r="3.5" fill="#171D1C"/>
+</svg>
