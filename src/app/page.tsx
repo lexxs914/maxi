@@ -12,6 +12,7 @@ interface CouplePage {
   active: boolean;
   flowerImgPath?: string;
   iconName: "flower" | "history" | "calendar" | "letters";
+  icon?: React.ReactNode;
   sectionColor: string;
   sectionSecondaryColor: string;
   textColor: string;
@@ -29,6 +30,18 @@ const couplePages: CouplePage[] = [
     iconName: "flower",
     sectionColor: "#FFC000",
     sectionSecondaryColor: "#FF8400",
+    textColor: "#171D1C",
+  },
+  {
+    id: "contador-dias",
+    title: "Contador de Días",
+    description: "Calculadora de días, meses y años compartiendo el camino.",
+    href: "/contador-dias",
+    badge: "Próximamente",
+    active: false,
+    iconName: "calendar",
+    sectionColor: "#FC5A8D",
+    sectionSecondaryColor: "#F42244",
     textColor: "#171D1C",
   },
 ];
@@ -63,7 +76,7 @@ export default function Home() {
               <span>Secciones Disponibles</span>
             </h2>
             <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-[#F786AA]/30 border border-[#000F08]">
-              {couplePages.filter((p) => p.active).length} Activa
+              {couplePages.filter((p) => p.active).length}/{couplePages.length} Activas
             </span>
           </div>
 
