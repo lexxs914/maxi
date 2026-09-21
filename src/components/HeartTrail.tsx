@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-interface Petal {
+interface HeartItem {
   id: number;
   x: number;
   y: number;
@@ -11,76 +11,69 @@ interface Petal {
   color: string;
 }
 
-export default function PetalTrail() {
-  const [petals, setPetals] = useState<Petal[]>([]);
+export default function HeartTrail() {
+  const [hearts, setHearts] = useState<HeartItem[]>([]);
 
   useEffect(() => {
     let lastTime = 0;
-    const colors = ["#FFD700", "#FFC000", "#FFE033", "#FFEB66", "#FFCE00"];
+    const colors = ["#FC5A8D", "#F786AA", "#FF4D6D", "#FF85A1", "#FF758F"];
 
     const handleMouseMove = (e: MouseEvent) => {
       const now = Date.now();
       if (now - lastTime < 30) return;
       lastTime = now;
 
-      const newPetal: Petal = {
+      const newHeart: HeartItem = {
         id: Math.random() + now,
         x: e.clientX,
         y: e.clientY,
         size: Math.floor(Math.random() * 8) + 12, // 12px a 20px
-        rotation: Math.floor(Math.random() * 360),
+        rotation: Math.floor(Math.random() * 40) - 20,
         color: colors[Math.floor(Math.random() * colors.length)],
       };
 
-      setPetals((prev) => [...prev.slice(-20), newPetal]);
+      setHearts((prev) => [...prev.slice(-20), newHeart]);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Eliminar rápido los pétalos para que sean efímeros
+  // Eliminar rápido los corazones para que sean efímeros
   useEffect(() => {
-    if (petals.length === 0) return;
+    if (hearts.length === 0) return;
 
     const timer = setTimeout(() => {
-      setPetals((prev) => prev.slice(1));
+      setHearts((prev) => prev.slice(1));
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [petals]);
+  }, [hearts]);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-      {petals.map((petal) => (
+      {hearts.map((heart) => (
         <div
-          key={petal.id}
+          key={heart.id}
           className="absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-400 ease-out opacity-0 scale-75"
           style={{
-            left: `${petal.x}px`,
-            top: `${petal.y}px`,
-            transform: `translate(-50%, -50%) rotate(${petal.rotation}deg)`,
+            left: `${heart.x}px`,
+            top: `${heart.y}px`,
+            transform: `translate(-50%, -50%) rotate(${heart.rotation}deg)`,
             opacity: 0.9,
           }}
         >
-          {/* Pétalo Amarillo Puro Sin Borde Negro */}
+          {/* Corazón SVG Sin Borde */}
           <svg
-            width={petal.size}
-            height={petal.size}
+            width={heart.size}
+            height={heart.size}
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M12 2 C6 7, 3 13, 5 18 C7 21, 12 22, 16 19 C20 15, 18 8, 12 2 Z"
-              fill={petal.color}
-            />
-            <path
-              d="M12 5 C10 9, 9 14, 11 18"
-              stroke="#FFFFFF"
-              strokeWidth="0.8"
-              strokeLinecap="round"
-              opacity="0.4"
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              fill={heart.color}
             />
           </svg>
         </div>

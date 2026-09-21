@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Sparkles, ArrowRight } from "lucide-react";
+import HeartTrail from "@/components/HeartTrail";
 
 /* 
 // SECCIONES FUTURAS COMENTADAS HASTA QUE ESTÉN COMPLETAS:
@@ -78,11 +79,22 @@ const couplePages: CouplePage[] = [
   */
 ];
 
+// Estilo de cursor en forma de corazón solo para la página principal
+const heartCursorStyle = {
+  cursor: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23FC5A8D' stroke='%23000F08' stroke-width='1.5'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>") 12 12, pointer`,
+};
+
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#F7F7F7] text-[#000F08] flex flex-col font-sans px-4 py-8 sm:px-8 sm:py-12">
+    <div
+      className="min-h-screen bg-[#F7F7F7] text-[#000F08] flex flex-col font-sans px-4 py-8 sm:px-8 sm:py-12 relative"
+      style={heartCursorStyle}
+    >
+      {/* Rastro de corazones en la página principal */}
+      <HeartTrail />
+
       {/* Container Mobile First */}
-      <div className="w-full max-w-3xl mx-auto flex-1 flex flex-col">
+      <div className="w-full max-w-3xl mx-auto flex-1 flex flex-col relative z-10">
         
         {/* Header de la pantalla principal */}
         <header className="text-center mb-8 sm:mb-12">
@@ -110,7 +122,7 @@ export default function Home() {
                 className="rounded-2xl border-2 border-[#000F08] p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between bg-[#F7F7F7] shadow-[4px_4px_0px_0px_#000F08] hover:shadow-[6px_6px_0px_0px_#000F08] hover:-translate-y-0.5"
               >
                 <div>
-                  {/* Badge & Logo usando las imágenes PNG personalizadas */}
+                  {/* Badge & Logo usando el COLOR PROPIO de cada sección */}
                   <div className="flex items-center justify-between mb-4">
                     <div
                       className="w-12 h-12 rounded-xl border-2 border-[#000F08] flex items-center justify-center p-1.5 shadow-[2px_2px_0px_0px_#000F08]"
