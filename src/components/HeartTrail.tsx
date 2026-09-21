@@ -6,6 +6,8 @@ interface HeartItem {
   id: number;
   x: number;
   y: number;
+  dx: number;
+  dy: number;
   size: number;
   rotation: number;
   color: string;
@@ -20,32 +22,40 @@ export default function HeartTrail() {
 
     const handleMouseMove = (e: MouseEvent) => {
       const now = Date.now();
-      if (now - lastTime < 30) return;
+      if (now - lastTime < 25) return; // Generación rápida y continua
       lastTime = now;
+
+      // Dirección de disparo hacia afuera del cursor (360 grados)
+      const angle = Math.random() * Math.PI * 2;
+      const distance = Math.floor(Math.random() * 35) + 25; // 25px a 60px hacia afuera
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance;
 
       const newHeart: HeartItem = {
         id: Math.random() + now,
         x: e.clientX,
         y: e.clientY,
-        size: Math.floor(Math.random() * 8) + 12, // 12px a 20px
-        rotation: Math.floor(Math.random() * 40) - 20,
+        dx,
+        dy,
+        size: Math.floor(Math.random() * 16) + 24, // Doble de grande: 24px a 40px
+        rotation: Math.floor(Math.random() * 60) - 30,
         color: colors[Math.floor(Math.random() * colors.length)],
       };
 
-      setHearts((prev) => [...prev.slice(-20), newHeart]);
+      setHearts((prev) => [...prev.slice(-25), newHeart]);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Eliminar rápido los corazones para que sean efímeros
+  // Eliminar rápido los corazones (~280ms) para que sean ultrafugaces
   useEffect(() => {
     if (hearts.length === 0) return;
 
     const timer = setTimeout(() => {
       setHearts((prev) => prev.slice(1));
-    }, 400);
+    }, 280);
 
     return () => clearTimeout(timer);
   }, [hearts]);
@@ -55,15 +65,15 @@ export default function HeartTrail() {
       {hearts.map((heart) => (
         <div
           key={heart.id}
-          className="absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-400 ease-out opacity-0 scale-75"
+          className="absolute opacity-0 scale-125 transition-all duration-300 ease-out"
           style={{
             left: `${heart.x}px`,
             top: `${heart.y}px`,
-            transform: `translate(-50%, -50%) rotate(${heart.rotation}deg)`,
-            opacity: 0.9,
+            transform: `translate(calc(-50% + ${heart.dx}px), calc(-50% + ${heart.dy}px)) rotate(${heart.rotation}deg)`,
+            opacity: 0,
           }}
         >
-          {/* Corazón SVG Sin Borde */}
+          {/* Corazón Rosa Sin Borde - Doble de tamaño */}
           <svg
             width={heart.size}
             height={heart.size}
