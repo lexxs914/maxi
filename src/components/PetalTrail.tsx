@@ -26,7 +26,8 @@ export default function PetalTrail() {
       lastTime = now;
 
       const angle = Math.random() * Math.PI * 2;
-      const distance = Math.floor(Math.random() * 35) + 25;
+      // Desplazamiento más lento/suave hacia afuera (10px a 24px en lugar de 60px)
+      const distance = Math.floor(Math.random() * 14) + 10;
       const dx = Math.cos(angle) * distance;
       const dy = Math.sin(angle) * distance;
 
@@ -48,7 +49,7 @@ export default function PetalTrail() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Limpieza automática tras los 320ms de la animación
+  // Limpieza rápida para mantener la velocidad a la que desaparecen (320ms)
   useEffect(() => {
     if (petals.length === 0) return;
 
