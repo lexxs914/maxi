@@ -51,12 +51,9 @@ export default function FloresAmarillasPage() {
 
   // Clic en cualquier flor
   const handleFlowerClick = () => {
-    if (activeAnim) return; // Esperar a que la animación actual de 5s termine
+    if (activeAnim) return;
 
-    // Frase aleatoria
     const phrase = PHRASES[Math.floor(Math.random() * PHRASES.length)].toLowerCase();
-
-    // Tipo de animación en ciclo secuencial (1 -> 2 -> 3 -> 4)
     const type = ANIM_CYCLE[cycleIndex];
     setCycleIndex((prev) => (prev + 1) % ANIM_CYCLE.length);
 
@@ -69,7 +66,6 @@ export default function FloresAmarillasPage() {
     setContinuousHearts([]);
 
     if (type === 2) {
-      // Generar 50 corazones que salen del centro en ráfaga
       const hearts: FlyingHeart[] = Array.from({ length: 50 }).map((_, i) => {
         const angle = Math.random() * Math.PI * 2;
         const dist = Math.floor(Math.random() * 400) + 200;
@@ -86,7 +82,6 @@ export default function FloresAmarillasPage() {
       setRepeatingText(phrase);
     }
 
-    // Duración de EXACTAMENTE 5 segundos
     setTimeout(() => {
       setActiveAnim(null);
       setRandomItems([]);
@@ -142,7 +137,6 @@ export default function FloresAmarillasPage() {
     if (!activeAnim || activeAnim.type !== 4) return;
 
     const interval = setInterval(() => {
-      // Engendrar 2 corazones nuevos continuamente cada 60ms
       const newHearts: FlyingHeart[] = Array.from({ length: 2 }).map(() => {
         const angle = Math.random() * Math.PI * 2;
         const dist = Math.floor(Math.random() * 450) + 250;
@@ -189,6 +183,7 @@ export default function FloresAmarillasPage() {
             width={32}
             height={32}
             className="w-8 h-8 object-contain"
+            priority
           />
           <span>Flores Amarillas</span>
         </div>
@@ -236,6 +231,8 @@ export default function FloresAmarillasPage() {
               width={64}
               height={64}
               className="w-14 h-14 sm:w-18 sm:h-18 object-contain drop-shadow-md active:scale-90 transition-transform"
+              priority={index < 5}
+              loading={index < 5 ? "eager" : "lazy"}
             />
           </div>
         ))}

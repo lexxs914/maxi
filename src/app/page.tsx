@@ -3,11 +3,6 @@ import Image from "next/image";
 import { Sparkles, ArrowRight } from "lucide-react";
 import HeartTrail from "@/components/HeartTrail";
 
-/* 
-// SECCIONES FUTURAS COMENTADAS HASTA QUE ESTÉN COMPLETAS:
-import { BookHeart, Calendar, MessageSquareHeart, Lock } from "lucide-react";
-*/
-
 interface CouplePage {
   id: string;
   title: string;
@@ -17,7 +12,6 @@ interface CouplePage {
   active: boolean;
   flowerImgPath?: string;
   iconName: "flower" | "history" | "calendar" | "letters";
-  // Colores PROPIOS y DISTINTIVOS de cada sección
   sectionColor: string;
   sectionSecondaryColor: string;
   textColor: string;
@@ -33,53 +27,12 @@ const couplePages: CouplePage[] = [
     active: true,
     flowerImgPath: "/flowers/1.png",
     iconName: "flower",
-    // Color distintivo propio de la sección Flores Amarillas
     sectionColor: "#FFC000",
     sectionSecondaryColor: "#FF8400",
     textColor: "#171D1C",
   },
-  /* 
-  // Secciones adicionales comentadas con sus colores distintivos propios:
-  {
-    id: "nuestra-historia",
-    title: "Nuestra Historia",
-    description: "Línea del tiempo interactiva con los momentos más importantes juntos.",
-    href: "#",
-    badge: "Próximamente",
-    active: false,
-    iconName: "history",
-    sectionColor: "#9333EA",
-    sectionSecondaryColor: "#C084FC",
-    textColor: "#FFFFFF",
-  },
-  {
-    id: "contador-dias",
-    title: "Contador de Días",
-    description: "Calculadora de días, meses y años compartiendo el camino.",
-    href: "#",
-    badge: "Próximamente",
-    active: false,
-    iconName: "calendar",
-    sectionColor: "#0EA5E9",
-    sectionSecondaryColor: "#38BDF8",
-    textColor: "#FFFFFF",
-  },
-  {
-    id: "cartas-amor",
-    title: "Cartas & Notas",
-    description: "Espacio para guardar cartas secretas y notas de amor.",
-    href: "#",
-    badge: "Próximamente",
-    active: false,
-    iconName: "letters",
-    sectionColor: "#10B981",
-    sectionSecondaryColor: "#34D399",
-    textColor: "#FFFFFF",
-  },
-  */
 ];
 
-// Estilo de cursor en forma de corazón solo para la página principal
 const heartCursorStyle = {
   cursor: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='%23FC5A8D' stroke='%23000F08' stroke-width='1.5'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg>") 12 12, pointer`,
 };
@@ -93,7 +46,6 @@ export default function Home() {
       {/* Rastro de corazones en la página principal */}
       <HeartTrail />
 
-      {/* Container Mobile First */}
       <div className="w-full max-w-3xl mx-auto flex-1 flex flex-col relative z-10">
         
         {/* Header de la pantalla principal */}
@@ -122,7 +74,6 @@ export default function Home() {
                 className="rounded-2xl border-2 border-[#000F08] p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between bg-[#F7F7F7] shadow-[4px_4px_0px_0px_#000F08] hover:shadow-[6px_6px_0px_0px_#000F08] hover:-translate-y-0.5"
               >
                 <div>
-                  {/* Badge & Logo usando el COLOR PROPIO de cada sección */}
                   <div className="flex items-center justify-between mb-4">
                     <div
                       className="w-12 h-12 rounded-xl border-2 border-[#000F08] flex items-center justify-center p-1.5 shadow-[2px_2px_0px_0px_#000F08]"
@@ -135,6 +86,7 @@ export default function Home() {
                           width={40}
                           height={40}
                           className="w-full h-full object-contain"
+                          priority
                         />
                       ) : null}
                     </div>
@@ -147,14 +99,12 @@ export default function Home() {
                     </span>
                   </div>
 
-                  {/* Título y Descripción */}
                   <h3 className="text-xl font-extrabold text-[#000F08] mb-2">{page.title}</h3>
                   <p className="text-xs sm:text-sm text-[#000F08]/80 mb-6 leading-relaxed">
                     {page.description}
                   </p>
                 </div>
 
-                {/* Botón usando el COLOR PROPIO de la sección */}
                 <Link
                   href={page.href}
                   className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold border-2 border-[#000F08] shadow-[2px_2px_0px_0px_#000F08] transition-all active:translate-y-0.5 hover:opacity-90"
