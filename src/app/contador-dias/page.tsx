@@ -5,10 +5,16 @@ import { ArrowLeft } from "lucide-react";
 import HeartTrail from "@/components/HeartTrail";
 import { useEffect, useState } from "react";
 
-// Fecha de inicio: 29 de julio de 2026 a las 22:32 hora Argentina (UTC-3)
-const START_DATE = new Date("2026-07-29T22:32:00-03:00");
+// Fechas disponibles
+const DATES = [
+  { id: "conocimos", label: "24 de julio", sublabel: "nos conocimos", date: "2026-07-24T19:37:00-03:00" },
+  { id: "hablamos", label: "29 de julio", sublabel: "nos hablamos", date: "2026-07-29T22:32:00-03:00" },
+  { id: "primera_vez", label: "10 de agosto", sublabel: "te vi por primera vez", date: "2026-08-10T11:00:00-03:00" },
+  { id: "persona", label: "14 de agosto", sublabel: "nos conocimos en persona", date: "2026-08-14T08:00:00-03:00" },
+];
 
 interface TimeElapsed {
+  years: number;
   months: number;
   days: number;
   hours: number;
@@ -17,41 +23,46 @@ interface TimeElapsed {
   totalDays: number;
 }
 
-function calcElapsed(): TimeElapsed {
+function calcElapsed(targetDateStr: string): TimeElapsed {
+  const startDate = new Date(targetDateStr);
   const now = new Date();
-  const diff = now.getTime() - START_DATE.getTime();
+  const diff = now.getTime() - startDate.getTime();
 
-  if (diff < 0) return { months: 0, days: 0, hours: 0, minutes: 0, seconds: 0, totalDays: 0 };
+  if (diff < 0) return { years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0, totalDays: 0 };
 
   const totalSeconds = Math.floor(diff / 1000);
   const totalMinutes = Math.floor(totalSeconds / 60);
   const totalHours   = Math.floor(totalMinutes / 60);
   const totalDays    = Math.floor(totalHours / 24);
 
-  // Calcular meses completos y días restantes
-  const startYear  = START_DATE.getFullYear();
-  const startMonth = START_DATE.getMonth();
+  // Calcular años, meses completos y días restantes
+  const startYear  = startDate.getFullYear();
+  const startMonth = startDate.getMonth();
   const nowYear    = now.getFullYear();
   const nowMonth   = now.getMonth();
   const nowDay     = now.getDate();
-  const startDay   = START_DATE.getDate();
+  const startDay   = startDate.getDate();
 
-  let months = (nowYear - startYear) * 12 + (nowMonth - startMonth);
+  let totalMonths = (nowYear - startYear) * 12 + (nowMonth - startMonth);
   let days = nowDay - startDay;
   if (days < 0) {
-    months -= 1;
+    totalMonths -= 1;
     // Días del mes anterior
     const prevMonth = new Date(nowYear, nowMonth, 0);
     days += prevMonth.getDate();
   }
 
-  const hours   = now.getHours() - START_DATE.getHours()   >= 0
-    ? now.getHours()   % 24
+  // Desglosar meses totales en Años y Meses (0-11)
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+
+  const hours   = now.getHours() - startDate.getHours() >= 0
+    ? now.getHours() % 24
     : (now.getHours() + 24) % 24;
   const minutes = now.getMinutes();
   const seconds = now.getSeconds();
 
-  return { months, days, hours, minutes, seconds, totalDays };
+  return { years, months, days, hours, minutes, seconds, totalDays };
 }
 
 interface UnitBoxProps {
@@ -74,14 +85,41 @@ function UnitBox({ value, label, accent = false }: UnitBoxProps) {
 }
 
 export default function ContadorDiasPage() {
-  const [elapsed, setElapsed] = useState<TimeElapsed>(calcElapsed());
+  const [selectedDateId, setSelectedDateId] = useState<string>("hablamos");
+  const selectedDate = DATES.find((d) => d.id === selectedDateId) || DATES[1];
+  
+  // 1. Estado para controlar la hidratación
+  const [isMounted, setIsMounted] = useState(false);
+
+  // 2. Estado inicial genérico para evitar discrepancias SSR / Cliente
+  const [elapsed, setElapsed] = useState<TimeElapsed>({
+    years: 0,
+    months: 0,
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    totalDays: 0,
+  });
 
   useEffect(() => {
+    // Marcamos como montado solo cuando estamos en el navegador
+    setIsMounted(true);
+    
+    // Calculamos el tiempo inmediatamente al montar
+    setElapsed(calcElapsed(selectedDate.date));
+
     const timer = setInterval(() => {
-      setElapsed(calcElapsed());
+      setElapsed(calcElapsed(selectedDate.date));
     }, 1000);
+
     return () => clearInterval(timer);
-  }, []);
+  }, [selectedDateId, selectedDate.date]);
+
+  // Evita renderizar datos desfasados en el primer frame de servidor/cliente
+  if (!isMounted) {
+    return null; // O puedes retornar un skeleton / loader simple si prefieres
+  }
 
   return (
     <div className="min-h-screen bg-[#F7F7F7] text-[#171D1C] flex flex-col font-sans relative overflow-hidden">
@@ -122,14 +160,38 @@ export default function ContadorDiasPage() {
       </header>
 
       {/* ------------------------------------------------------------- */}
+      {/* NAV FILTROS: Selección de Fechas                               */}
+      {/* ------------------------------------------------------------- */}
+      <nav className="w-full bg-[#F7F7F7] py-3 px-4 relative z-30 overflow-x-auto no-scrollbar">
+        <div className="flex items-center justify-start sm:justify-center gap-2.5 min-w-max mx-auto">
+          {DATES.map((item) => {
+            const isActive = item.id === selectedDateId;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setSelectedDateId(item.id)}
+                className={`flex flex-col items-center px-3.5 py-1.5 rounded-3xl cursor-pointer border-2 border-[#171D1C] text-xs font-bold transition-all ${
+                  isActive
+                    ? "bg-[#FA5563] text-[#171D1C] shadow-[3px_3px_0px_0px_#171D1C] translate-x-[-1px] translate-y-[-1px]"
+                    : "bg-white text-[#171D1C]/80 hover:bg-[#FC5A8D]/20 shadow-[2px_2px_0px_0px_#171D1C]"
+                }`}
+              >
+                <span className="font-extrabold text-sm">{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+
+      {/* ------------------------------------------------------------- */}
       {/* CONTENIDO PRINCIPAL: Contador                                  */}
       {/* ------------------------------------------------------------- */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 py-10 relative z-10">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-8 relative z-10">
 
         {/* Título */}
-        <div className="text-center mb-8 sm:mb-10">
-          <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#FC5A8D] mb-2">
-            Desde el 29 de julio de 2026, 22:32
+        <div className="text-center mb-6 sm:mb-8">
+          <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#FC5A8D] mb-1">
+            Desde que {selectedDate.sublabel} ({selectedDate.label})
           </p>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-[#171D1C] leading-tight">
             Llevamos juntos
@@ -138,7 +200,7 @@ export default function ContadorDiasPage() {
 
         {/* Tarjeta principal — Días totales */}
         <div className="w-full max-w-sm mb-6 sm:mb-8">
-          <div className="rounded-2xl border-2 border-[#171D1C] bg-[#FC5A8D] shadow-[6px_6px_0px_0px_#171D1C] p-6 sm:p-8 text-center">
+          <div className="rounded-2xl border-2 border-[#171D1C] bg-[#FA5563] shadow-[6px_6px_0px_0px_#171D1C] p-6 sm:p-8 text-center">
             <span className="text-7xl sm:text-9xl font-black tabular-nums text-[#171D1C] leading-none">
               {elapsed.totalDays}
             </span>
@@ -148,10 +210,27 @@ export default function ContadorDiasPage() {
           </div>
         </div>
 
-        {/* Detalle: Meses + Días */}
-        <div className="w-full max-w-sm grid grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
-          <UnitBox value={elapsed.months} label="meses" accent />
-          <UnitBox value={elapsed.days}   label="días" />
+        {/* Detalle: Años (si hay >= 1) + Meses + Días */}
+        {elapsed.years > 0 && (
+          <div className="w-full max-w-sm grid gap-3 sm:gap-4 mb-3 sm:mb-4">
+              <UnitBox 
+                value={elapsed.years} 
+                label={elapsed.years === 1 ? "año" : "años"} 
+                accent 
+              />
+          </div>
+        )}
+
+        <div className="w-full max-w-sm grid gap-3 sm:gap-4 mb-3 sm:mb-4 grid-cols-2">
+          <UnitBox 
+            value={elapsed.months} 
+            label={elapsed.months === 1 ? "mes" : "meses"} 
+            accent={elapsed.years === 0} 
+          />
+          <UnitBox 
+            value={elapsed.days}   
+            label={elapsed.days === 1 ? "día" : "días"} 
+          />
         </div>
 
         {/* Detalle: Horas + Minutos + Segundos */}

@@ -8,7 +8,6 @@ interface CouplePage {
   title: string;
   description: string;
   href: string;
-  badge: string;
   active: boolean;
   imgPath?: string;
   sectionColor: string;
@@ -22,7 +21,6 @@ const couplePages: CouplePage[] = [
     title: "Flores Amarillas",
     description: "Un detalle especial lleno de luz, flores animadas y mensajes de cariño.",
     href: "/flores-amarillas",
-    badge: "Disponible",
     active: true,
     imgPath: "/flowers/1.png",
     sectionColor: "#FFC000",
@@ -34,11 +32,10 @@ const couplePages: CouplePage[] = [
     title: "Contador de Días",
     description: "Calculadora de días, meses y años compartiendo el camino.",
     href: "/contador-dias",
-    badge: "Próximamente",
-    active: false,
+    active: true,
     imgPath: "/calendar-icon.svg",
     sectionColor: "#FC5A8D",
-    sectionSecondaryColor: "#F42244",
+    sectionSecondaryColor: "#FA5563",
     textColor: "#171D1C",
   },
 ];
@@ -97,7 +94,7 @@ export default function Home() {
                   </div>
                 )}
 
-                <div>
+                <div> 
                   <div className="flex items-center justify-between mb-4">
                     <div
                       className="w-12 h-12 rounded-xl border-2 border-[#000F08] flex items-center justify-center p-1.5 shadow-[2px_2px_0px_0px_#000F08]"
@@ -118,7 +115,7 @@ export default function Home() {
                       className="text-xs font-bold px-2.5 py-1 rounded-full border border-[#000F08]"
                       style={{ backgroundColor: page.sectionSecondaryColor, color: page.textColor }}
                     >
-                      {page.badge}
+                      {page.active ? "Disponible" : "Proximamente"}
                     </span>
                   </div>
 
