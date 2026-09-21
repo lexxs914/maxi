@@ -15,116 +15,121 @@ body {
   padding: 0;
 }
 
-/* Vector Flowers Animations (Entering/Leaving edges and fading background) */
+/* ------------------------------------------------------------- */
+/* ANIMACIONES DE FLORES: Asomarse desde bordes y Abrirse/Cerrarse */
+/* ------------------------------------------------------------- */
 
-@keyframes flower-drift-left {
+@keyframes peek-top {
   0% {
-    transform: translateX(-100%) translateY(0) rotate(0deg);
+    transform: translateY(-110%) rotate(0deg);
     opacity: 0;
   }
   20% {
-    opacity: 0.85;
+    transform: translateY(12px) rotate(6deg);
+    opacity: 1;
   }
-  80% {
-    opacity: 0.85;
+  75% {
+    transform: translateY(4px) rotate(-4deg);
+    opacity: 1;
   }
   100% {
-    transform: translateX(110vw) translateY(-40px) rotate(180deg);
+    transform: translateY(-110%) rotate(12deg);
     opacity: 0;
   }
 }
 
-@keyframes flower-drift-right {
+@keyframes peek-bottom {
   0% {
-    transform: translateX(100vw) translateY(0) rotate(0deg);
+    transform: translateY(110%) rotate(0deg);
     opacity: 0;
   }
   20% {
-    opacity: 0.85;
+    transform: translateY(-12px) rotate(-6deg);
+    opacity: 1;
   }
-  80% {
-    opacity: 0.85;
+  75% {
+    transform: translateY(-4px) rotate(4deg);
+    opacity: 1;
   }
   100% {
-    transform: translateX(-100%) translateY(50px) rotate(-180deg);
+    transform: translateY(110%) rotate(-12deg);
     opacity: 0;
   }
 }
 
-@keyframes flower-pop-fade {
+@keyframes peek-left {
   0% {
-    transform: scale(0.3) rotate(-15deg);
+    transform: translateX(-110%) rotate(0deg);
     opacity: 0;
   }
-  30% {
-    transform: scale(1.1) rotate(5deg);
-    opacity: 0.9;
+  20% {
+    transform: translateX(16px) rotate(10deg);
+    opacity: 1;
   }
-  70% {
+  75% {
+    transform: translateX(4px) rotate(-5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-110%) rotate(-15deg);
+    opacity: 0;
+  }
+}
+
+@keyframes peek-right {
+  0% {
+    transform: translateX(110%) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    transform: translateX(-16px) rotate(-10deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translateX(-4px) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(110%) rotate(15deg);
+    opacity: 0;
+  }
+}
+
+@keyframes bloom-fade {
+  0% {
+    transform: scale(0) rotate(-35deg);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1.06) rotate(4deg);
+    opacity: 1;
+  }
+  45%, 75% {
     transform: scale(1) rotate(0deg);
-    opacity: 0.9;
+    opacity: 1;
   }
   100% {
-    transform: scale(0.4) rotate(20deg);
+    transform: scale(0) rotate(35deg);
     opacity: 0;
   }
 }
 
-@keyframes flower-edge-top {
-  0% {
-    transform: translateY(-120%) rotate(0deg);
-    opacity: 0;
-  }
-  30% {
-    transform: translateY(10px) rotate(15deg);
-    opacity: 0.9;
-  }
-  70% {
-    transform: translateY(0px) rotate(-10deg);
-    opacity: 0.9;
-  }
-  100% {
-    transform: translateY(-120%) rotate(30deg);
-    opacity: 0;
-  }
+.animate-peek-top {
+  animation: peek-top 9s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
-@keyframes flower-edge-bottom {
-  0% {
-    transform: translateY(120%) rotate(0deg);
-    opacity: 0;
-  }
-  30% {
-    transform: translateY(-15px) rotate(-15deg);
-    opacity: 0.9;
-  }
-  70% {
-    transform: translateY(0px) rotate(10deg);
-    opacity: 0.9;
-  }
-  100% {
-    transform: translateY(120%) rotate(-30deg);
-    opacity: 0;
-  }
+.animate-peek-bottom {
+  animation: peek-bottom 10s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
-/* Helper animation classes */
-.animate-flower-drift-left {
-  animation: flower-drift-left 14s linear infinite;
+.animate-peek-left {
+  animation: peek-left 11s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
-.animate-flower-drift-right {
-  animation: flower-drift-right 16s linear infinite;
+.animate-peek-right {
+  animation: peek-right 12s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
 
-.animate-flower-pop-fade {
-  animation: flower-pop-fade 7s ease-in-out infinite;
-}
-
-.animate-flower-edge-top {
-  animation: flower-edge-top 9s ease-in-out infinite;
-}
-
-.animate-flower-edge-bottom {
-  animation: flower-edge-bottom 10s ease-in-out infinite;
+.animate-bloom-fade {
+  animation: bloom-fade 8s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
