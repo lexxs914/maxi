@@ -44,6 +44,37 @@ nextjs-portal,
 }
 
 /* ------------------------------------------------------------- */
+/* ANIMACIONES PARA INTERACCIONES DE FLORES AMARILLAS             */
+/* ------------------------------------------------------------- */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pop-in {
+  0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+  70% { transform: scale(1.08) rotate(3deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes bounce-short {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.05); }
+}
+
+@keyframes explode-heart {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.2); }
+}
+
+.animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
+.animate-pop-in { animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+.animate-bounce-short { animation: bounce-short 1.5s ease-in-out infinite; }
+.animate-explode-heart { animation: explode-heart 3.5s ease-out forwards; }
+
+/* ------------------------------------------------------------- */
 /* ANIMACIONES DE FLORES: Frecuentes, suaves y asomándose bordes */
 /* ------------------------------------------------------------- */
 
@@ -114,7 +145,7 @@ nextjs-portal,
     opacity: 1;
   }
   75% {
-    transform: translateX(-2px) rotate(4deg);
+    transform: translateX(-2px) rotate(-4deg);
     opacity: 1;
   }
   100% {
@@ -142,7 +173,6 @@ nextjs-portal,
   }
 }
 
-/* Animaciones más frecuentes y fluidas */
 .animate-peek-top {
   animation: peek-top 6s cubic-bezier(0.33, 1, 0.68, 1) infinite;
 }
