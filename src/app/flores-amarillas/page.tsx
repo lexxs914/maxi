@@ -183,7 +183,6 @@ export default function FloresAmarillasPage() {
             width={32}
             height={32}
             className="w-8 h-8 object-contain"
-            priority
           />
           <span>Flores Amarillas</span>
         </div>
@@ -231,8 +230,6 @@ export default function FloresAmarillasPage() {
               width={64}
               height={64}
               className="w-14 h-14 sm:w-18 sm:h-18 object-contain drop-shadow-md active:scale-90 transition-transform"
-              priority={index < 5}
-              loading={index < 5 ? "eager" : "lazy"}
             />
           </div>
         ))}

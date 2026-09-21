@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "Nuestros Momentos ❤️",
   description: "Plataforma especial para parejas con detalles y páginas interactivas.",
   icons: {
-    icon: "/heart-favicon.svg",
+    icon: "/flower-favicon.svg",
   },
 };
 
