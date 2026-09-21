@@ -1,0 +1,53 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="sunCenter" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#B45309" />
+      <stop offset="60%" stop-color="#78350F" />
+      <stop offset="100%" stop-color="#171D1C" />
+    </radialGradient>
+  </defs>
+
+  <path d="M60 60 L15 90 C5 75 10 50 40 55 Z" fill="#15803D" stroke="#171D1C" stroke-width="2.5" />
+  <path d="M60 60 L105 90 C115 75 110 50 80 55 Z" fill="#15803D" stroke="#171D1C" stroke-width="2.5" />
+
+  <g stroke="#171D1C" stroke-width="2.5">
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(0 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(22.5 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(45 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(67.5 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(90 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(112.5 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(135 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(157.5 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(180 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(202.5 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(225 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(247.5 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(270 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(292.5 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(315 60 60)" />
+    <path d="M60 60 Q50 30 60 5 Q70 30 60 60 Z" fill="#FFC000" transform="rotate(337.5 60 60)" />
+  </g>
+
+  <g stroke="#171D1C" stroke-width="1.5">
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(11.25 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(33.75 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(56.25 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(78.75 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(101.25 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(123.75 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(146.25 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(168.75 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(191.25 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(213.75 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(236.25 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(258.75 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(281.25 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(303.75 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(326.25 60 60)" />
+    <path d="M60 60 Q54 38 60 22 Q66 38 60 60 Z" fill="#FF8400" transform="rotate(348.75 60 60)" />
+  </g>
+
+  <circle cx="60" cy="60" r="26" fill="url(#sunCenter)" stroke="#171D1C" stroke-width="3" />
+  <circle cx="60" cy="60" r="18" fill="none" stroke="#FFC000" stroke-width="2" stroke-dasharray="4 3" opacity="0.7" />
+</svg>

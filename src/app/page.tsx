@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Sparkles, Flower2, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { Sparkles, ArrowRight } from "lucide-react";
 
 /* 
 // SECCIONES FUTURAS COMENTADAS HASTA QUE ESTÉN COMPLETAS:
@@ -13,11 +14,12 @@ interface CouplePage {
   href: string;
   badge: string;
   active: boolean;
+  flowerSvgPath?: string;
   iconName: "flower" | "history" | "calendar" | "letters";
-  // Colores distintivos por sección
-  primaryColor: string;
-  secondaryColor: string;
-  buttonHoverColor: string;
+  // Colores PROPIOS y DISTINTIVOS de cada sección (sin usar el de la página principal)
+  sectionColor: string;
+  sectionSecondaryColor: string;
+  textColor: string;
 }
 
 const couplePages: CouplePage[] = [
@@ -28,13 +30,15 @@ const couplePages: CouplePage[] = [
     href: "/flores-amarillas",
     badge: "Disponible",
     active: true,
+    flowerSvgPath: "/flowers/sunflower.svg",
     iconName: "flower",
-    primaryColor: "#FC5A8D",
-    secondaryColor: "#F786AA",
-    buttonHoverColor: "#F786AA",
+    // Color distintivo propio de la sección Flores Amarillas (#FFC000 / #FF8400)
+    sectionColor: "#FFC000",
+    sectionSecondaryColor: "#FF8400",
+    textColor: "#171D1C",
   },
   /* 
-  // Secciones adicionales comentadas hasta estar desarrolladas:
+  // Secciones adicionales comentadas con sus colores distintivos propios:
   {
     id: "nuestra-historia",
     title: "Nuestra Historia",
@@ -43,9 +47,9 @@ const couplePages: CouplePage[] = [
     badge: "Próximamente",
     active: false,
     iconName: "history",
-    primaryColor: "#9333EA",
-    secondaryColor: "#E9D5FF",
-    buttonHoverColor: "#A855F7",
+    sectionColor: "#9333EA",
+    sectionSecondaryColor: "#C084FC",
+    textColor: "#FFFFFF",
   },
   {
     id: "contador-dias",
@@ -55,9 +59,9 @@ const couplePages: CouplePage[] = [
     badge: "Próximamente",
     active: false,
     iconName: "calendar",
-    primaryColor: "#0284C7",
-    secondaryColor: "#BAE6FD",
-    buttonHoverColor: "#38BDF8",
+    sectionColor: "#0EA5E9",
+    sectionSecondaryColor: "#38BDF8",
+    textColor: "#FFFFFF",
   },
   {
     id: "cartas-amor",
@@ -67,9 +71,9 @@ const couplePages: CouplePage[] = [
     badge: "Próximamente",
     active: false,
     iconName: "letters",
-    primaryColor: "#059669",
-    secondaryColor: "#A7F3D0",
-    buttonHoverColor: "#10B981",
+    sectionColor: "#10B981",
+    sectionSecondaryColor: "#34D399",
+    textColor: "#FFFFFF",
   },
   */
 ];
@@ -80,7 +84,7 @@ export default function Home() {
       {/* Container Mobile First */}
       <div className="w-full max-w-3xl mx-auto flex-1 flex flex-col">
         
-        {/* Header de la pantalla principal (Sin cartel, sin subtítulo y sin borde inferior) */}
+        {/* Header de la pantalla principal */}
         <header className="text-center mb-8 sm:mb-12">
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#000F08]">
             Nuestros <span className="text-[#FC5A8D]">Momentos</span>
@@ -106,18 +110,26 @@ export default function Home() {
                 className="rounded-2xl border-2 border-[#000F08] p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between bg-[#F7F7F7] shadow-[4px_4px_0px_0px_#000F08] hover:shadow-[6px_6px_0px_0px_#000F08] hover:-translate-y-0.5"
               >
                 <div>
-                  {/* Badge & Logo con color distintivo */}
+                  {/* Badge & Logo usando el COLOR PROPIO de cada sección */}
                   <div className="flex items-center justify-between mb-4">
                     <div
-                      className="w-11 h-11 rounded-xl border-2 border-[#000F08] flex items-center justify-center text-[#F7F7F7] shadow-[2px_2px_0px_0px_#000F08]"
-                      style={{ backgroundColor: page.primaryColor }}
+                      className="w-12 h-12 rounded-xl border-2 border-[#000F08] flex items-center justify-center p-1.5 shadow-[2px_2px_0px_0px_#000F08]"
+                      style={{ backgroundColor: page.sectionColor }}
                     >
-                      {page.iconName === "flower" && <Flower2 className="w-6 h-6" />}
+                      {page.flowerSvgPath ? (
+                        <Image
+                          src={page.flowerSvgPath}
+                          alt={page.title}
+                          width={36}
+                          height={36}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : null}
                     </div>
 
                     <span
                       className="text-xs font-bold px-2.5 py-1 rounded-full border border-[#000F08]"
-                      style={{ backgroundColor: page.secondaryColor, color: "#000F08" }}
+                      style={{ backgroundColor: page.sectionSecondaryColor, color: page.textColor }}
                     >
                       {page.badge}
                     </span>
@@ -130,11 +142,11 @@ export default function Home() {
                   </p>
                 </div>
 
-                {/* Botón con color distintivo de la sección */}
+                {/* Botón usando el COLOR PROPIO de la sección */}
                 <Link
                   href={page.href}
-                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-[#F7F7F7] border-2 border-[#000F08] shadow-[2px_2px_0px_0px_#000F08] hover:text-[#000F08] transition-all active:translate-y-0.5"
-                  style={{ backgroundColor: page.primaryColor }}
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold border-2 border-[#000F08] shadow-[2px_2px_0px_0px_#000F08] transition-all active:translate-y-0.5 hover:opacity-90"
+                  style={{ backgroundColor: page.sectionColor, color: page.textColor }}
                 >
                   <span>Entrar a la página</span>
                   <ArrowRight className="w-4 h-4" />
@@ -143,11 +155,8 @@ export default function Home() {
             ))}
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="mt-12 pt-6 border-t border-[#000F08]/20 text-center text-xs text-[#000F08]/70">
-          <p>Plataforma para Parejas • {new Date().getFullYear()}</p>
-        </footer>
+        
+        {/* Footer quitado como fue solicitado */}
       </div>
     </div>
   );
